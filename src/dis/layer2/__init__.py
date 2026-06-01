@@ -1,23 +1,23 @@
 """
-DIS v1.1 Layer 2: Structural Recovery (Contract Implementation Phase)
+DIS v1.1 Layer 2: 结构恢复（契约实现阶段）
 
-This module defines the contracts and interfaces for Layer 2.
+本模块定义 Layer 2 的契约与接口。
 
-Layer 2 is responsible for:
-- Reading Order Recovery
-- TOC / Chapter / Section Hierarchy Recovery
-- Cross-Reference Recovery (figure, table, formula references)
-- Basic page structural decomposition (if purely structural)
+Layer 2 负责：
+- 阅读顺序恢复
+- 目录 / 章节 / 小节层级恢复
+- 交叉引用恢复（图、表、公式引用）
+- 基础页面结构分解（仅限纯结构部分）
 
-Strict boundaries (inherited from Permanent Boundary + Data Flow Contracts):
-- No semantic interpretation
-- No Concept / Knowledge extraction
-- No Chunking
-- Must respect Identity Persistence Rule (stable IDs)
-- Must respect Mutation Rule (cannot modify RawDocument elements)
-- Must respect Reference Stability Rule (stable IDs as primary references)
-- Output must remain purely structural + referential
+严格边界（继承自永久边界 + 数据流契约）：
+- 不进行语义解释
+- 不进行概念 / 知识提取
+- 不进行分块（Chunking）
+- 必须遵守身份持久性规则（稳定 ID）
+- 必须遵守变更规则（不得修改 RawDocument 元素）
+- 必须遵守引用稳定性规则（以稳定 ID 作为主引用）
+- 输出必须保持纯结构 + 引用性质
 
-This phase focuses on Contract Definition and Interface Stabilization only.
-No actual recovery algorithms are implemented here.
+本阶段仅聚焦于契约定义与接口稳定化。
+此处不实现任何实际恢复算法。
 """

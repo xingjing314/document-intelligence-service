@@ -1,25 +1,25 @@
 """
-Layer 1: Document Ingestion — Pure Perception Implementation (FROZEN)
+Layer 1: 文档摄取 — 纯感知实现（已冻结）
 
-This class has reached Perception Complete State.
+本类已达到感知完成状态。
 
-Allowed operations (strictly limited to perception + basic geometry):
-- Open PDF and iterate pages
-- Extract raw text spans with bbox (preserving original order and breaks)
-- Extract images with bbox
-- Capture page-level geometry (width, height, rotation)
-- Assign stable element_id
-- Record raw extraction output + confidence + provenance
+允许的操作（严格限制在感知 + 基础几何范围内）：
+- 打开 PDF 并遍历页面
+- 提取带 bbox 的原始文本片段（保留原始顺序与断行）
+- 提取带 bbox 的图像
+- 捕获页面级几何信息（宽度、高度、旋转）
+- 分配稳定 element_id
+- 记录原始提取输出 + 置信度 + 来源
 
-Strictly forbidden in this layer (and permanently):
-- Any structural inference (titles, paragraphs, chapters, reading order)
-- Any semantic classification
-- Grouping, merging, or clustering elements
-- Table / formula / region detection or boundary inference
-- OCR post-correction, reconstruction, or semantic enhancement
-- Any consideration of downstream layers (Layer 2/3/4)
+本层（且永久）严格禁止：
+- 任何结构推断（标题、段落、章节、阅读顺序）
+- 任何语义分类
+- 对元素进行分组、合并或聚类
+- 表格 / 公式 / 区域检测或边界推断
+- OCR 后校正、重建或语义增强
+- 任何对下游层（Layer 2/3/4）的考虑
 
-Status: Layer 1 is now frozen. No further refinement allowed.
+状态：Layer 1 现已冻结。不允许进一步修改。
 """
 
 from __future__ import annotations
@@ -37,39 +37,38 @@ from ..schema import DocumentMeta, Provenance
 
 class DocumentIngestion(IngestionStub):
     """
-    Layer 1 - Pure Perception Layer (FROZEN).
+    Layer 1 - 纯感知层（已冻结）。
 
-    This class has reached "Perception Complete State".
+    本类已达到“感知完成状态”。
 
-    It only decomposes the PDF into raw visual elements + basic page geometry.
-    It does not understand document structure or meaning.
+    它仅将 PDF 分解为原始视觉元素 + 基础页面几何。
+    不理解文档结构或含义。
 
-    It implements the IngestionStub protocol defined in Step 3.
+    它实现了步骤 3 中定义的 IngestionStub 协议。
 
-    IMPORTANT: This layer is now frozen. No further enhancement is allowed.
+    重要：本层现已冻结。不允许进一步增强。
     """
 
     def __init__(self, dpi: int = 200):
         """
-        dpi: Rendering resolution for image-based extraction.
-             Higher DPI gives better geometry accuracy but more data.
+        dpi：基于图像提取的渲染分辨率。
+             更高的 DPI 提供更好的几何精度，但数据量更大。
         """
         self.dpi = dpi
 
     def process(self, pdf_source: Union[str, bytes, Path]) -> RawDocument:
         """
-        Main entry point for Layer 1 (Final Assembly Point).
+        Layer 1 的主入口（最终组装点）。
 
-        This method performs the final structural assembly of RawDocument
-        from raw perception results. No new information is created here —
-        only organization of already extracted facts.
+        本方法从原始感知结果执行 RawDocument 的最终结构组装。
+        此处不创建新信息——仅组织已提取的事实。
 
-        Layer 1 is frozen. This method represents the stable boundary.
+        Layer 1 已冻结。本方法代表稳定边界。
         """
-        # Perception + Geometry capture (already executed in _extract_raw_pages)
+        # 感知 + 几何捕获（已在 _extract_raw_pages 中执行）
         raw_pages = self._extract_raw_pages(pdf_source)
 
-        # Final RawDocument assembly (Step 4-C) — pure structural composition only
+        # 最终 RawDocument 组装（步骤 4-C）— 仅纯结构组合
         document_meta = self._build_document_meta(pdf_source)
 
         raw_document = RawDocument(
@@ -80,18 +79,18 @@ class DocumentIngestion(IngestionStub):
         return raw_document
 
     # ------------------------------------------------------------------
-    # Internal Perception Methods (Perception Only)
+    # 内部感知方法（仅感知）
     # ------------------------------------------------------------------
 
     def _extract_raw_pages(self, pdf_source: Union[str, bytes, Path]) -> list[RawPage]:
-        """Extract raw elements page by page without any structural interpretation."""
+        """逐页提取原始元素，不进行任何结构解释。"""
         doc = self._open_pdf(pdf_source)
         pages: list[RawPage] = []
 
         for page_index in range(len(doc)):
             page = doc[page_index]
 
-            # Capture pure page geometry (Step 4-B: Geometry normalization)
+            # 捕获纯页面几何（步骤 4-B：几何归一化）
             page_rect = page.rect
             page_width = page_rect.width
             page_height = page_rect.height
@@ -114,15 +113,15 @@ class DocumentIngestion(IngestionStub):
 
     def _extract_elements_from_page(self, page: fitz.Page, page_number: int) -> list[RawElement]:
         """
-        Extract raw visual elements from a single page.
+        从单页提取原始视觉元素。
 
-        This method must remain strictly perceptual:
-        - It reports what is visually present.
-        - It does NOT decide what the element "means".
+        本方法必须保持严格感知性质：
+        - 报告视觉上存在的内容。
+        - 不判断元素“意味着”什么。
         """
         elements: list[RawElement] = []
 
-        # 1. Text spans (raw, as returned by the extractor)
+        # 1. 文本片段（原始，由提取器返回）
         text_dict = page.get_text("dict")
         for block in text_dict.get("blocks", []):
             if "lines" not in block:
@@ -136,7 +135,7 @@ class DocumentIngestion(IngestionStub):
                         bbox=bbox,
                         type="text",
                         content=span["text"],
-                        confidence=1.0,  # PyMuPDF text extraction is generally high confidence
+                        confidence=1.0,  # PyMuPDF 文本提取通常具有较高置信度
                         provenance=Provenance(
                             source_page=page_number,
                             bbox=bbox,
@@ -148,7 +147,7 @@ class DocumentIngestion(IngestionStub):
                     )
                     elements.append(element)
 
-        # 2. Images
+        # 2. 图像
         for img in page.get_images(full=True):
             xref = img[0]
             bbox_list = page.get_image_rects(xref)
@@ -159,7 +158,7 @@ class DocumentIngestion(IngestionStub):
                     page=page_number,
                     bbox=bbox,
                     type="image",
-                    content=None,  # We do not embed image bytes in perception layer by default
+                    content=None,  # 默认不在感知层嵌入图像字节
                     confidence=0.95,
                     provenance=Provenance(
                         source_page=page_number,
@@ -172,26 +171,26 @@ class DocumentIngestion(IngestionStub):
                 )
                 elements.append(element)
 
-        # Layer 1 remains strictly minimal by design.
-        # No object boundary inference or region detection is performed.
+        # Layer 1 按设计保持严格最小化。
+        # 不执行对象边界推断或区域检测。
 
         return elements
 
     def _build_document_meta(self, pdf_source: Union[str, bytes, Path]) -> DocumentMeta:
-        """Build minimal document-level metadata from the PDF itself."""
+        """从 PDF 本身构建最小文档级元数据。"""
         doc = self._open_pdf(pdf_source)
 
         meta = DocumentMeta(
             source_filename=self._get_source_name(pdf_source),
             total_pages=len(doc),
-            language="unknown",  # Layer 1 does not perform language detection
+            language="unknown",  # Layer 1 不执行语言检测
         )
 
         doc.close()
         return meta
 
     # ------------------------------------------------------------------
-    # Helper Methods (Pure Utility)
+    # 辅助方法（纯工具）
     # ------------------------------------------------------------------
 
     def _open_pdf(self, pdf_source: Union[str, bytes, Path]) -> fitz.Document:

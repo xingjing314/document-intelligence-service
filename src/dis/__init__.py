@@ -1,9 +1,9 @@
 """
-Document Intelligence Service (DIS)
-Phase 3 Implementation - Frozen Architecture
+文档智能服务 (DIS)
+阶段 3 实现 - 冻结架构
 
-This package implements the Document Recovery System only.
-It produces StructuredDocument (MCDM) as the single canonical output.
+本包仅实现文档恢复系统。
+它以 StructuredDocument (MCDM) 作为唯一的规范输出。
 """
 
 from .schema import (

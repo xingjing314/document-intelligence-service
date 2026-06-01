@@ -1,16 +1,16 @@
 """
-DIS v1.1 — Step 3: Pipeline Stub Implementation (Structural Skeleton Only)
+DIS v1.1 — 步骤 3：流水线桩实现（仅结构骨架）
 
-CRITICAL RULES FOR THIS FILE:
-- This file contains ONLY class and method skeletons.
-- All methods MUST raise NotImplementedError().
-- There is ZERO business logic, ZERO algorithms, ZERO data processing.
-- This is a structural wiring of the frozen Layer Contracts only.
-- NO intelligence of any kind is allowed in Step 3.
+本文件的严格规则：
+- 本文件仅包含类与方法骨架。
+- 所有方法必须抛出 NotImplementedError()。
+- 零业务逻辑、零算法、零数据处理。
+- 仅为冻结的 Layer 契约进行结构化连接。
+- 步骤 3 中不允许任何形式的智能处理。
 
-Purpose:
-Provide the high-level data flow structure that will later be implemented,
-while guaranteeing strict adherence to Step 2 contracts.
+目的：
+提供后续将要实现的高层数据流结构，
+同时保证严格遵守步骤 2 的契约。
 """
 
 from __future__ import annotations
@@ -33,37 +33,37 @@ from .validation import run_hard_validation_gates
 
 class IngestionStub(Protocol):
     """
-    Layer 1 Stub: Document Ingestion
+    Layer 1 桩：文档摄取
 
-    Input : PDF (bytes or path)  — defined outside contracts for entry point
-    Output: RawDocument
+    输入 : PDF（bytes 或路径）— 入口点在契约外定义
+    输出: RawDocument
     """
 
     def process(self, pdf_source: bytes | str) -> RawDocument:
         """
-        Stub method. Must raise NotImplementedError in Step 3.
+        桩方法。步骤 3 中必须抛出 NotImplementedError。
         """
-        raise NotImplementedError("Ingestion layer not implemented in Step 3 stub.")
+        raise NotImplementedError("摄取层在步骤 3 桩中未实现。")
 
 
 class StructuralRecoveryStub(Protocol):
     """
-    Layer 2 Stub: Structural Recovery
+    Layer 2 桩：结构恢复
 
-    Input : RawDocument
-    Output: ReconstructedStructure
+    输入 : RawDocument
+    输出: ReconstructedStructure
     """
 
     def process(self, raw: RawDocument) -> ReconstructedStructure:
-        raise NotImplementedError("Structural Recovery layer not implemented in Step 3 stub.")
+        raise NotImplementedError("结构恢复层在步骤 3 桩中未实现。")
 
 
 class AssetRecoveryStub(Protocol):
     """
-    Layer 3 Stub: Asset Recovery
+    Layer 3 桩：资产恢复
 
-    Input : RawDocument + ReconstructedStructure (as per AssemblyInput needs)
-    Output: AssetRecoveryResult
+    输入 : RawDocument + ReconstructedStructure（按 AssemblyInput 需求）
+    输出: AssetRecoveryResult
     """
 
     def process(
@@ -71,19 +71,19 @@ class AssetRecoveryStub(Protocol):
         raw: RawDocument,
         structure: ReconstructedStructure,
     ) -> AssetRecoveryResult:
-        raise NotImplementedError("Asset Recovery layer not implemented in Step 3 stub.")
+        raise NotImplementedError("资产恢复层在步骤 3 桩中未实现。")
 
 
 class DocumentAssemblyStub(Protocol):
     """
-    Layer 4 Stub: Document Assembly
+    Layer 4 桩：文档组装
 
-    Input : AssemblyInput (structure + assets + raw)
-    Output: StructuredDocument (final MCDM)
+    输入 : AssemblyInput（结构 + 资产 + 原始数据）
+    输出: StructuredDocument（最终 MCDM）
     """
 
     def process(self, assembly_input: AssemblyInput) -> StructuredDocument:
-        raise NotImplementedError("Document Assembly layer not implemented in Step 3 stub.")
+        raise NotImplementedError("文档组装层在步骤 3 桩中未实现。")
 
 
 # =============================================================================
@@ -92,12 +92,12 @@ class DocumentAssemblyStub(Protocol):
 
 class DocumentIntelligencePipeline:
     """
-    Top-level pipeline skeleton.
+    顶层流水线骨架。
 
-    This class is responsible ONLY for wiring the four layer stubs
-    according to the frozen contracts defined in Step 2.
+    本类仅负责按照步骤 2 中冻结的契约，
+    将四个层桩连接起来。
 
-    It must NOT contain any processing logic.
+    不得包含任何处理逻辑。
     """
 
     def __init__(
@@ -108,8 +108,8 @@ class DocumentIntelligencePipeline:
         assembly: DocumentAssemblyStub,
     ):
         """
-        Accepts injected stubs (Dependency Injection skeleton).
-        In real implementation, concrete classes will be passed here.
+        接受注入的桩（依赖注入骨架）。
+        实际实现中会传入具体类。
         """
         self._ingestion = ingestion
         self._structural = structural_recovery
@@ -118,40 +118,40 @@ class DocumentIntelligencePipeline:
 
     def process(self, pdf_source: bytes | str) -> StructuredDocument:
         """
-        High-level data flow skeleton.
+        高层数据流骨架。
 
-        This method shows the exact contract flow:
+        本方法展示精确的契约流：
         PDF → RawDocument → ReconstructedStructure → AssetRecoveryResult → StructuredDocument
 
-        IMPORTANT:
-        - This method contains NO logic.
-        - It only demonstrates the structural wiring.
-        - Validation gate is called at the end as a required hook.
+        重要说明：
+        - 本方法不包含任何逻辑。
+        - 仅演示结构连接。
+        - 末尾会调用验证门作为必需钩子。
         """
-        # Step 1: Ingestion (Layer 1)
+        # 步骤 1：摄取（Layer 1）
         raw_document: RawDocument = self._ingestion.process(pdf_source)
 
-        # Step 2: Structural Recovery (Layer 2)
+        # 步骤 2：结构恢复（Layer 2）
         reconstructed_structure: ReconstructedStructure = self._structural.process(raw_document)
 
-        # Step 3: Asset Recovery (Layer 3)
+        # 步骤 3：资产恢复（Layer 3）
         asset_result: AssetRecoveryResult = self._asset.process(
             raw_document, reconstructed_structure
         )
 
-        # Prepare input for final assembly according to Step 2 contract
+        # 按照步骤 2 契约准备最终组装输入
         assembly_input = AssemblyInput(
             structure=reconstructed_structure,
             assets=asset_result,
             raw_document=raw_document,
         )
 
-        # Step 4: Document Assembly (Layer 4)
+        # 步骤 4：文档组装（Layer 4）
         structured_document: StructuredDocument = self._assembly.process(assembly_input)
 
-        # Mandatory Validation Hook (from Step 1)
-        # This must be called before returning any StructuredDocument.
-        # The actual validation logic lives in validation.py and is NOT modified here.
+        # 强制验证钩子（来自步骤 1）
+        # 必须在返回任何 StructuredDocument 之前调用。
+        # 实际验证逻辑位于 validation.py，此处不修改。
         run_hard_validation_gates(structured_document)
 
         return structured_document

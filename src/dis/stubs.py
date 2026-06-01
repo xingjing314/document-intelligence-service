@@ -1,11 +1,11 @@
 """
-DIS v1.1 — Step 3: Concrete Stub Implementations (Still No Logic)
+DIS v1.1 — 步骤 3：具体桩实现（仍无业务逻辑）
 
-These are minimal concrete classes that satisfy the Protocol interfaces.
-They exist ONLY so the pipeline skeleton can be instantiated and type-checked.
+这些是最小的具体类，用于满足 Protocol 接口。
+它们仅用于让流水线骨架能够被实例化和类型检查。
 
-All methods still raise NotImplementedError().
-No real processing is performed.
+所有方法仍抛出 NotImplementedError()。
+不执行任何真实处理。
 """
 
 from .contracts import (
@@ -24,32 +24,32 @@ from .schema import StructuredDocument
 
 
 class FakeIngestionStub(IngestionStub):
-    """Minimal concrete stub for Layer 1. Contains zero logic."""
+    """Layer 1 的最小具体桩。包含零逻辑。"""
 
     def process(self, pdf_source: bytes | str) -> RawDocument:
-        raise NotImplementedError("FakeIngestionStub.process() is a Step 3 skeleton only.")
+        raise NotImplementedError("FakeIngestionStub.process() 仅为步骤 3 骨架。")
 
 
 class FakeStructuralRecoveryStub(StructuralRecoveryStub):
-    """Minimal concrete stub for Layer 2."""
+    """Layer 2 的最小具体桩。"""
 
     def process(self, raw: RawDocument) -> ReconstructedStructure:
-        raise NotImplementedError("FakeStructuralRecoveryStub.process() is a Step 3 skeleton only.")
+        raise NotImplementedError("FakeStructuralRecoveryStub.process() 仅为步骤 3 骨架。")
 
 
 class FakeAssetRecoveryStub(AssetRecoveryStub):
-    """Minimal concrete stub for Layer 3."""
+    """Layer 3 的最小具体桩。"""
 
     def process(
         self,
         raw: RawDocument,
         structure: ReconstructedStructure,
     ) -> AssetRecoveryResult:
-        raise NotImplementedError("FakeAssetRecoveryStub.process() is a Step 3 skeleton only.")
+        raise NotImplementedError("FakeAssetRecoveryStub.process() 仅为步骤 3 骨架。")
 
 
 class FakeAssemblyStub(DocumentAssemblyStub):
-    """Minimal concrete stub for Layer 4."""
+    """Layer 4 的最小具体桩。"""
 
     def process(self, assembly_input: AssemblyInput) -> StructuredDocument:
-        raise NotImplementedError("FakeAssemblyStub.process() is a Step 3 skeleton only.")
+        raise NotImplementedError("FakeAssemblyStub.process() 仅为步骤 3 骨架。")

@@ -1,21 +1,21 @@
 """
-DIS v1.1 Layer 1: Document Ingestion (Pure Perception Layer) — FROZEN
+DIS v1.1 Layer 1: 文档摄取（纯感知层）— 已冻结
 
-Status: Perception Complete State
+状态：感知完成状态
 
-This module is responsible ONLY for:
-- PDF page rendering
-- Raw visual element extraction (text spans, images)
-- Basic page geometry capture (width, height, rotation)
-- Preservation of raw extraction output
+本模块仅负责：
+- PDF 页面渲染
+- 原始视觉元素提取（文本片段、图像）
+- 基础页面几何信息捕获（宽度、高度、旋转角度）
+- 原始提取输出的保存
 
-Strict boundaries (permanently locked):
-- No structure understanding
-- No semantic classification
-- No object boundary inference / grouping / segmentation
-- No table or formula region detection
-- Raw output preservation
-- No awareness of downstream layers
+严格边界（永久锁定）：
+- 不进行结构理解
+- 不进行语义分类
+- 不进行对象边界推断 / 分组 / 分割
+- 不进行表格或公式区域检测
+- 保留原始输出
+- 不感知下游层
 
-Layer 1 is now frozen. No further refinement is allowed.
+Layer 1 现已冻结。不允许进一步修改。
 """
